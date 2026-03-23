@@ -6,8 +6,7 @@ import { LayoutDashboard, PieChart, UserCircle, Sparkles } from "lucide-react";
 
 const navLinks = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/",   label: "Budgets",   icon: PieChart },
-  { href: "/",  label: "Profil",    icon: UserCircle },
+  { href: "/profil",  label: "Profil",    icon: UserCircle },
 ];
 
 export function Navbar() {
@@ -19,7 +18,7 @@ export function Navbar() {
       {/* Logo */}
       <div className="navbar-start">
         <Link href="/" className="flex items-center gap-2">
-          <div className="bg-primary/10 text-primary p-1.5 rounded-lg">
+          <div className="bg-accent/10 text-accent p-1.5 rounded-lg">
             <Sparkles size={22} />
           </div>
           <span className="text-base font-semibold">
@@ -50,7 +49,7 @@ export function Navbar() {
 
       <div className="navbar-end">
         <div className="avatar placeholder">
-          <div className="bg-primary text-primary-content  flex justify-center items-center rounded-lg w-8">
+          <div className="bg-accent text-accent-content  flex justify-center items-center rounded-lg w-8">
             <span className="text-xs">JD</span>
           </div>
         </div>

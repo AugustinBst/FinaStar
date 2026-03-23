@@ -2,14 +2,31 @@
 @import "tw-animate-css";
 
 @plugin "daisyui" {
-  themes: dark --default;
+  themes: light --default;
 }
 
 [data-theme="dark"] {
-  --color-primary: #34d399;
+  --color-accent: #f564c7;
+  --color-primary: #f564c7;
   --color-primary-content: #000;
   --color-base-100: #080810;
   --color-base-200: #0f0f1a;
   --color-base-300: #1a1a2e;
+  --color-base-400: #222238;
+  --color-base-500: #2a2a45;
+  --color-base-600: #333355;
+  --color-base-700: #3d3d66;
+  --color-base-800: #474778;
+  --color-base-900: #52528a;
   --color-base-content: #f8fafc;
+  --color-complementary: #64F592;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.6; filter: blur(6px); }
+  50%       { opacity: 1;   filter: blur(14px); }
+}
+
+.glow-pink {
+  animation: glow-pulse 2s ease-in-out infinite;
 }

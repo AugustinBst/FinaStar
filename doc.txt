@@ -1,0 +1,16 @@
+START DB
+
+brew services start postgresql@18
+psql postgres
+
+
+START BACKEND
+python3 -m venv path/to/venv
+source path/to/venv/bin/activate
+uvicorn api.main:app --reload
+
+
+START FRONTEND
+npm run dev
+
+MDP 'finastarAdmin1407';

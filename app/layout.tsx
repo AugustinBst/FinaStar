@@ -26,13 +26,12 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="dark">
       <body
-        className={` bg-zinc-900 ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Navbar />
-        <div className='flex  justify-center p-12'>
-          <button className="btn btn-primary">Finastar</button>
+        <div className=''>
+          {children}
         </div>
-        {children}
       </body>
     </html>
   );
