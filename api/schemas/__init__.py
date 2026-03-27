@@ -3,3 +3,4 @@ from .goal import GoalCreate, GoalUpdate, GoalResponse
 from .category import CategoryCreate, CategoryResponse
 from .transaction import TransactionCreate, TransactionResponse
 from .debt import DebtCreate, DebtUpdate, DebtResponse
+from .monthly_income import MonthlyIncomeCreate, MonthlyIncomeResponse

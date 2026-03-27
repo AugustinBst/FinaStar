@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
-from api.routes import auth, auth_router, goals_router, categories_router, transactions_router, debts_router, overview_router
+from api.routes import auth, auth_router, goals_router, categories_router, transactions_router, debts_router, monthly_income_router, overview_router
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
@@ -17,6 +17,7 @@ app.include_router(goals_router)
 app.include_router(categories_router)
 app.include_router(transactions_router)
 app.include_router(debts_router)
+app.include_router(monthly_income_router)
 app.include_router(overview_router)
 app.include_router(auth.router)
 def custom_openapi():
