@@ -26,7 +26,7 @@ def create_goal(goal: GoalCreate, db: Session = Depends(get_db), current_user: U
 def update_goal(goal_id: UUID, data: GoalUpdate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     goal = db.query(Goal).filter(Goal.id == goal_id, Goal.user_id == current_user.id).first()
     if not goal:
-        raise HTTPException(status_code=404, detail="Goal introuvable")
+        raise HTTPException(status_code=404, detail="id doesn't exist")
     for key, value in data.model_dump(exclude_unset=True).items():
         setattr(goal, key, value)
     db.commit()
@@ -37,7 +37,7 @@ def update_goal(goal_id: UUID, data: GoalUpdate, db: Session = Depends(get_db), 
 def delete_goal(goal_id: UUID, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     goal = db.query(Goal).filter(Goal.id == goal_id, Goal.user_id == current_user.id).first()
     if not goal:
-        raise HTTPException(status_code=404, detail="Goal introuvable")
+        raise HTTPException(status_code=404, detail="id doesn't exist")
     db.delete(goal)
     db.commit()
-    return {"message": "Goal supprimé"}
+    return {"Goal deleted"}

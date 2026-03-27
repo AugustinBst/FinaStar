@@ -1,2 +1,6 @@
-from .user import UserCreate, UserLogin, UserResponse, Token
+from .user import UserCreate, UserLogin, UserResponse, Token, UserUpdate
 from .goal import GoalCreate, GoalUpdate, GoalResponse
+from .category import CategoryCreate, CategoryResponse
+from .transaction import TransactionCreate, TransactionResponse
+from .debt import DebtCreate, DebtUpdate, DebtResponse
+from .monthly_income import MonthlyIncomeCreate, MonthlyIncomeResponse

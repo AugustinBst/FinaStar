@@ -8,6 +8,7 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    avatar = Column(String, default="profil1.png")
     pseudo = Column(String, unique=True, nullable=False)
     password_hash = Column(String, nullable=False)
     age = Column(Integer, nullable=True)

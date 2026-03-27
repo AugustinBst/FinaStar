@@ -14,21 +14,21 @@ export function StatCardCompact({
   currency,
 }: StatCardCompactProps) {
   return (
-    <div className="card bg-(--color-base-300) card-border border-(--color-base-700) text-base-content w-100">
-      <div className="card-body flex-row items-center gap-4 py-4">
+    <div className="card bg-(--color-base-300) card-border border-(--color-base-700) text-base-content w-full transition-shadow hover:shadow-md">
+      <div className="card-body flex-row items-center gap-3 sm:gap-4 p-4 sm:p-5">
 
         {icon && (
-          <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-(--color-base-200) shrink-0">
+          <div className="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-(--color-base-200) shrink-0">
             {icon}
           </div>
         )}
 
-        <div className="flex flex-col">
+        <div className="flex flex-col min-w-0">
           {title && (
-            <span className="text-sm text-base-content/60">{title}</span>
+            <span className="text-xs sm:text-sm text-base-content/60 truncate">{title}</span>
           )}
           {value !== undefined && (
-            <span className="text-2xl font-bold">
+            <span className="text-xl sm:text-2xl font-bold truncate">
               {typeof value === "number" ? value.toLocaleString() : value}{currency}
             </span>
           )}

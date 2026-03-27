@@ -1,105 +1,98 @@
-
 "use client";
+import { apiFetch } from "@/lib/api";
 import { PiggyBank } from "lucide-react";
-import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const emojis = ["🎯", "🚀", "💶", "🏠", "✈️", "🎓", "💻", "💪", "🎮",  "🏥", "👕", "👨‍🍳"];
+interface Goal {
+  id: string;
+  name: string;
+  emoji: string;
+}
 
+interface Props {
+  onSuccess?: () => void;
+}
 
-
-export default function DepositModal() {
-  const today = new Date().toISOString().split("T")[0];
-
-  const [selected, setSelected] = useState("🎯");
-  const [depositName, setdepositName] = useState("");
-  const [deadline, setDeadline] = useState(today);
+export default function DepositModal({ onSuccess }: Props) {
+  const [goals, setGoals] = useState<Goal[]>([]);
+  const [selectedGoal, setSelectedGoal] = useState<string | null>(null);
   const [price, setPrice] = useState<number | null>(null);
+  const [submit, setSubmit] = useState(false);
 
-  const [sumbit, setSumbit] = useState(false);
+  const isValid = price !== null && price >= 0;
 
-  const isValid = depositName.trim() !== "" && deadline !== "" && (price !== null && price >= 0);
+
+    useEffect(() => {
+      apiFetch("/goals/")
+        .then((res: Response) => res.json())
+        .then((data: Goal[]) => setGoals(data));
+    }, []);
 
   const handleSubmit = async () => {
-    setSumbit(true);
+    setSubmit(true);
     if (!isValid) return;
-    const payload = {
-      emoji: selected,
-      name: depositName,
-      deadline: deadline,
-    };
 
-    //TODO ✅ Remplace ces 2 lignes par ton fetch() quand le back est prêt :
-    // const res = await fetch("/api/deposits", { method: "POST", body: JSON.stringify(payload) });
-    // const data = await res.json();
 
-    const existing = JSON.parse(localStorage.getItem("deposits") || "[]");
-    existing.push({ id: Date.now(), ...payload });
-    console.log("deposit saved:", payload); // stockage temporaire
-    localStorage.setItem("deposits", JSON.stringify(existing));
-    (document.getElementById("my_modal_5") as HTMLDialogElement)?.close();
-    setSumbit(false);
+    await apiFetch("/transactions/", {
+      method: "POST",
+      body: JSON.stringify({
+        type: "deposit",
+        amount: price,
+        goal_id: selectedGoal,
+      }),
+    })
+
+    setPrice(null);
+    setSelectedGoal(null);
+    setSubmit(false);
+    (document.getElementById("my_modal_deposit") as HTMLDialogElement)?.close();
+    onSuccess?.();
   };
-
-
 
   return (
     <div className="flex font-sans">
-        <button className="btn btn-outline btn-accent border-(--color-base-700) text-base-content bg-base-300 hover:border-accent ease-in duration-300" onClick={()=>(document.getElementById('my_modal_5') as HTMLDialogElement)?.showModal()}><PiggyBank />save deposit</button>
-        <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
-          <div className="modal-box flex flex-col gap-6">
-            <h3 className="font-bold text-lg">You can set up a deposit !</h3>
-            <p className="py-4">Set up the deadline with the price of your deposit so the app will help you to manage your budget !</p>
+      <button
+        className="btn btn-outline btn-accent border-(--color-base-700) text-base-content bg-base-300 hover:border-accent ease-in duration-300"
+        onClick={() => (document.getElementById("my_modal_deposit") as HTMLDialogElement)?.showModal()}
+      >
+        <PiggyBank /> save deposit
+      </button>
+      <dialog id="my_modal_deposit" className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box flex flex-col gap-6">
+          <h3 className="font-bold text-lg">Add a deposit</h3>
 
-            <input
-              type="date"
-              min={today} className={`input input-accent w-60 flex justify-center ${sumbit && deadline === "" ? "input-error" : ""}`}
-              value={deadline}
-              onChange={(e) => setDeadline(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="What is your deposit ?"
-              className={`input input-accent w-60 text-center ${sumbit && depositName.trim() === "" ? "input-error" : ""}`}
-              value={depositName}
-              onChange={(e) => setdepositName(e.target.value)}
-            />
+          <input
+            type="number"
+            className={`input input-accent w-60 text-center ${(price !== null && price < 0) || (submit && price === null) ? "input-error" : ""}`}
+            placeholder="Amount ? 10€"
+            min="0"
+            value={price ?? ""}
+            onChange={(e) => setPrice(e.target.valueAsNumber)}
+          />
 
-            <input
-              type="number"
-              className={`input validator input-accent w-60 text-center ${(price !== null && price < 0) || (sumbit && price === null) ? "input-error" : ""}`}
-              required
-              placeholder="Price of your deposit ? 10€"
-              min="0"
-              max="10000000"
-              onChange={(e) => setPrice(e.target.valueAsNumber)}
-            />
+          <select
+            className="select select-accent w-60"
+            value={selectedGoal ?? ""}
+            onChange={(e) => setSelectedGoal(e.target.value || null)}
+          >
+            <option value="">No goal linked</option>
+            {goals.map((goal) => (
+              <option key={goal.id} value={goal.id}>
+                {goal.emoji} {goal.name}
+              </option>
+            ))}
+          </select>
 
-            <div className="dropdown dropdown-start">
-              <div tabIndex={0} role="button" className="input input-accent cursor-pointer  btn-base-200  text-xl w-60 flex justify-center items-center">
-                {selected}
-              </div>
-              <ul tabIndex={0} className="dropdown-content grid grid-cols-6 bg-base-200 rounded-box z-1 p-2 shadow-sm  gap-4 w-max">
-                {emojis.map((emoji) => (
-                  <li><a onClick={() => {
-                    setSelected(emoji);
-                    (document.activeElement as HTMLElement)?.blur();
-                  }
-                  }>{emoji}</a></li>
-                ))}
-              </ul>
-            </div>
-
-
-
-            <div className="modal-action">
-              <button className="btn btn-accent text-base-content" onClick={handleSubmit} disabled={sumbit && !isValid}>Submit</button>
-              <form method="dialog">
-                <button className="btn">Close</button>
-              </form>
-            </div>
+          <div className="modal-action">
+            <button className="btn btn-accent text-base-content" onClick={handleSubmit} disabled={submit && !isValid}>
+              Submit
+            </button>
+            <form method="dialog">
+              <button className="btn">Close</button>
+            </form>
           </div>
-        </dialog>
+        </div>
+      </dialog>
     </div>
   );
 }

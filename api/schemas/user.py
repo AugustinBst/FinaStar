@@ -17,6 +17,7 @@ class UserResponse(BaseModel):
     pseudo: str
     age: int | None
     currency: str
+    avatar: str | None = "profil1.png"
     created_at: datetime
 
     class Config:
@@ -25,3 +26,9 @@ class UserResponse(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+class UserUpdate(BaseModel):
+    pseudo: str | None = None
+    age: int | None = None
+    currency: str | None = None
+    avatar: str | None = None

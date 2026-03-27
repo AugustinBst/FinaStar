@@ -1,15 +1,15 @@
-import type { ReactNode } from "react";
+import type { Component, ReactNode } from "react";
 
 interface StatCardProps {
   title?: string;
   icon?: ReactNode;
   body?: string;
-  progress?: number;       // 0–100
+  progress?: number;
   current?: number;
   target?: number;
-  currency?: string;       // ex: "€"
-  actionLabel?: string;
-  onAction?: () => void;
+  currency?: string;
+  actionLabel?: any;
+  onAction?: () => Promise<void>;
 }
 
 export function StatCard({
@@ -27,7 +27,6 @@ export function StatCard({
     <div className="card bg-(--color-base-300) card-border border-(--color-base-700) text-base-content w-100">
       <div className="card-body gap-3">
 
-        {/* Header : icône + titre */}
         {(icon || title) && (
           <div className="flex items-center gap-3">
             {icon && (
@@ -52,7 +51,6 @@ export function StatCard({
           </div>
         )}
 
-        {/* Montant courant / cible */}
         {(current !== undefined || target !== undefined) && (
           <p className="text-sm text-base-content/70">
             {current !== undefined && (
@@ -67,13 +65,11 @@ export function StatCard({
           </p>
         )}
 
-        {/* Corps texte libre */}
         {body && <p className="text-sm">{body}</p>}
 
-        {/* Bouton d'action */}
         {actionLabel && (
           <div className="card-actions justify-end">
-            <button className="btn" onClick={onAction}>
+            <button className="btn bg-red-500/35 hover:bg-red-500/55" onClick={onAction}>
               {actionLabel}
             </button>
           </div>
