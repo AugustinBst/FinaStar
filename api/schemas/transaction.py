@@ -4,7 +4,7 @@ from datetime import datetime
 from decimal import Decimal
 
 class TransactionCreate(BaseModel):
-    type: str  # "deposit" | "expense"
+    type: str
     amount: Decimal
     goal_id: UUID | None = None
     category_id: UUID | None = None

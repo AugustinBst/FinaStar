@@ -11,6 +11,6 @@ class Transaction(Base):
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     goal_id = Column(UUID(as_uuid=True), ForeignKey("goals.id", ondelete="SET NULL"), nullable=True)
     category_id = Column(UUID(as_uuid=True), ForeignKey("categories.id", ondelete="SET NULL"), nullable=True)
-    type = Column(String, nullable=False)  # "deposit" | "expense"
+    type = Column(String, nullable=False)
     amount = Column(Numeric, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

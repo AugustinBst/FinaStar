@@ -20,7 +20,7 @@ def is_payment_due(debt: Debt) -> bool:
         return (today - debt.last_payment_date).days >= 7
     elif debt.regularity == "biweekly":
         return (today - debt.last_payment_date).days >= 14
-    else:  # monthly
+    else:
         last = debt.last_payment_date
         next_payment = date(last.year + (last.month // 12), (last.month % 12) + 1, last.day)
         return today >= next_payment

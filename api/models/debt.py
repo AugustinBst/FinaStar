@@ -1,4 +1,3 @@
-# models/debt.py
 from sqlalchemy import Column, String, Numeric, DateTime, Date, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
