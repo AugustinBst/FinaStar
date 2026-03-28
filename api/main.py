@@ -20,6 +20,8 @@ app.include_router(debts_router)
 app.include_router(monthly_income_router)
 app.include_router(overview_router)
 app.include_router(auth.router)
+
+
 def custom_openapi():
     if app.openapi_schema:
         return app.openapi_schema
