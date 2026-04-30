@@ -23,3 +23,12 @@ First, you need to start the PostgreSQL service so the backend can connect to it
 ```bash
 brew services start postgresql@18
 psql postgres
+
+# Create the virtual environment (you can change 'path/to/venv' to just 'venv')
+python3 -m venv path/to/venv
+
+# Activate the virtual environment
+source path/to/venv/bin/activate
+
+# Start the backend server with live reload
+uvicorn api.main:app --reload
