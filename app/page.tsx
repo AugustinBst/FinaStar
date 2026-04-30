@@ -13,6 +13,7 @@ import CategoryModal from "./components/modals/categoryModal";
 import { apiFetch, getToken } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import DebtModal from "./components/modals/debtModal";
+import { CryptoTracker } from "./components/cryptoTracker";
 
 interface Goal {
   id: string;
@@ -85,6 +86,46 @@ export default function Home() {
     apiFetch("/debts/")
       .then((res: Response) => res.json())
       .then((data: Debt[]) => setDebts(data));
+
+    // we fetch a zen quote from the github api
+    fetch('https://api.github.com/zen')
+      .then(response => response.text())
+      .then(text => {
+        // we look for the element where we want to show the quote
+        const zenQuote = document.getElementById('zen-quote');
+        if (zenQuote) {
+          // if the element exists, we put the quote inside
+          zenQuote.innerText = text;
+        }
+      });
+
+
+    const searchBtn = document.getElementById('search-btn');
+    const countryInput = document.getElementById('country-input');
+    const countryResult = document.getElementById('country-result');
+
+    searchBtn?.addEventListener('click', () => {
+      const inputValue = countryInput instanceof HTMLInputElement ? countryInput.value : '';
+
+      fetch(`https://restcountries.com/v3.1/capital/${inputValue}`)
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error("Not found");
+              }
+              return response.json();
+          })
+          .then(data => {
+              const countryName = data[0].name.common;
+              if (countryResult) {
+                countryResult.innerText = `The country is : ${countryName}`;
+              }
+          })
+          .catch(error => {
+              if (countryResult) {
+                countryResult.innerText = "Capital not found.";
+              }
+          });
+    });
   };
 
   const deleteGoal = async (id: string) => {
@@ -207,6 +248,43 @@ export default function Home() {
               </div>
             </div>
           )}
+          <div className="mt-10 w-full max-w-5xl bg-(--color-base-300) rounded-3xl border border-(--color-base-700) p-6 shadow-xl  backdrop-blur-md sm:p-8">
+            <div className="mb-5 text-center">
+              <h2 className="text-lg font-semibold text-base-content sm:text-xl">
+                Find the country !
+              </h2>
+              <p className="mt-1 text-sm text-base-content/70">
+                Enter a capital city to get the country !
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <label className="sr-only" htmlFor="country-input">
+                Country
+              </label>
+              <input
+                type="text"
+                id="country-input"
+                placeholder="e.g. Paris"
+                className="input input-bordered input-primary w-full rounded-2xl bg-base-200/80 px-4 py-3 text-base placeholder:text-base-content/40 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/30"
+              />
+              <button
+                id="search-btn"
+                className="btn btn-primary rounded-2xl border-0 x-6 text-base font-semibold text-white shadow-lg transition-transform duration-200 hover:scale-[1.02] hover:from-fuchsia-400 hover:to-pink-400"
+              >
+                Find country
+              </button>
+            </div>
+
+            <div className="mt-4 rounded-2xl border border-(--color-base-700) bg-base-200/60 px-4 py-3 text-center">
+              <p id="country-result" className="text-sm font-medium text-base-content/80">
+                Your result will appear here.
+              </p>
+            </div>
+          </div>
+          <CryptoTracker/>
+          <div id="zen-quote" className="divider text-center text-sm italic text-base-content/70 mt-2 mb-6"></div>
+
         </div>
       </div>
     </div>
