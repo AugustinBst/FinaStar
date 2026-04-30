@@ -1,34 +1,53 @@
-# Finastar Project
+## tech stack
 
-Welcome to the Finastar project! This application consists of a PostgreSQL database, a Python FastAPI backend, and a modern web frontend. 
+- **backend**: python, fastapi, postgresql
+- **frontend**: NextJS, tailwind css, React bit lib, daisy UI
+- **database**: postgresql 18
 
-Follow the instructions below to set up and run the project locally on your machine.
+## setup instructions
 
-## Prerequisites
+### database setup
 
-Before you begin, make sure you have the following installed on your computer:
-*   [PostgreSQL](https://www.postgresql.org/) (Version 18)
-*   [Python 3](https://www.python.org/)
-*   [Node.js and npm](https://nodejs.org/)
-
----
-
-## Getting Started
-
-To run the full application, you need to start the database, the backend, and the frontend. It is best to open a separate terminal window for each of these three steps.
-
-### 1. Start the Database
-
-First, you need to start the PostgreSQL service so the backend can connect to it.
+start postgresql service:
 ```bash
 brew services start postgresql@18
 psql postgres
+```
 
-# Create the virtual environment (you can change 'path/to/venv' to just 'venv')
+### backend setup
+
+1. create and activate virtual environment:
+```bash
 python3 -m venv path/to/venv
-
-# Activate the virtual environment
 source path/to/venv/bin/activate
+```
 
-# Start the backend server with live reload
+2. install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+3. start the server:
+```bash
 uvicorn api.main:app --reload
+```
+
+the api will run on `http://localhost:8000`
+
+### frontend setup
+
+start the development server:
+```bash
+npm run dev
+```
+
+
+## dependencies
+
+make sure you have installed:
+- python 3.8+
+- postgresql 18
+- node.js and npm
+- httpx (for async http requests)
+- fastapi
+- sqlalchemy
